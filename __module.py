@@ -1,10 +1,14 @@
 import asyncio
+import datetime
 import os
 import random
 import shutil
-from discord.ext import commands
-import discord
 import time
+from subprocess import call
+
+import discord
+import psutil
+from discord.ext import commands
 
 # MAIN VARIABLES
 MAINPATH = str(os.path.dirname(os.path.abspath(__file__))).replace("\\","/") + "/"
@@ -18,17 +22,16 @@ responder = commands.Bot(command_prefix='$',help_command=None)
 
 # Lists
 Banned_ids = [
+]
 
-]
-ADMINS = [
-    800558571129274450,
-    839323330297331743,
-    879210381661335592
-]
+ADMINS = []
+with open(f"{MAINPATH}ADMINS.txt", "r") as f:
+    for line in f:
+        ADMINS.append(int(line))
 
 COOLGUILDS = [
     973319206714081374
-]
+] #992058629517742080
 
 Commands = {
     "$help":"Bare bones help command, displays all of the commands, and sometimes more then that. PS; your kinda using it right now...",
@@ -388,5 +391,4 @@ class MusicPlayer:
         if voice_channel != None:
             self.channel = voice_channel.name
             self.vc = await voice_channel.connect()
-            # play music
-
+            # play music BUT I DONT KNOW HOW TOO GFSDGNSRIFHDVEUSDVFYESDVGFVUES
