@@ -1,10 +1,3 @@
-import datetime
-import os
-import time
-from subprocess import call
-
-import psutil
-
 from __module import *
 
 TIMEONLINE = time.time()
@@ -33,7 +26,28 @@ async def on_ready():
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         return
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.channel.send(embed=SimpleEmbed(f"${ctx.command.name} requires argument < {error.param.name} >.").rn())
+        return
     raise error
+
+# ADD ADMIN ------------------------------------------------------------------------------------------------------------------------------
+@responder.command()
+async def add_admin(ctx, user: discord.Member):
+    try:
+        if ctx.author.id in ADMINS:
+            if user.id in ADMINS:
+                await ctx.send(embed=SimpleEmbed("Yay!","This user is already an admin!").rn())
+            else:
+                ADMINS.append(user.id)
+                with open("{MAINPATH}ADMINS.txt", "w") as f:
+                    f.write(str(ADMINS)+"\n")
+                await ctx.send(embed=SimpleEmbed("Yay!","This user is now an admin!").rn())
+    except Exception as e:
+        await ctx.send(embed=SimpleEmbed("Yay!","Error was raised while adding admin!").rn())
+    finally:
+        return
+
 
 # Help Command ------------------------------------------------------------------------------------------------------------------------------
 @responder.command()
@@ -47,7 +61,7 @@ async def help(ctx):
         except discord.errors.NotFound:
             pass
         # initialize the embed
-        Commands_Embed_for_Help_Command = SimpleEmbed("Commands",des=f"{responder.user.name} has been online for { round((time.time()-TIMEONLINE)/60/60,4) } hours.\nRequested by: {ctx.author.mention}").rn()
+        Commands_Embed_for_Help_Command = SimpleEmbed("Commands",des=f"{responder.user.name} has been online for { round((time.time()-TIMEONLINE)/60/60,4) } hours.\nRequested by: {ctx.author.mention}\nGames can only be called once at a time in a chat channel ( It can cause errors! )").rn()
         # Add a field for each command
         for i in Commands:
             UpdatedCommands_Embed_for_Help_Command = Commands_Embed_for_Help_Command.add_field(name=f"{i}",value=f"{Commands[i]}",inline=False)
