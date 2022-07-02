@@ -21,14 +21,14 @@ Banned_ids = [
 
 ]
 ADMINS = [
-    800558571129274450, # Jazzyjazz
-    839323330297331743, # AMELIA
+    800558571129274450,
+    839323330297331743,
     879210381661335592
 ]
 
 COOLGUILDS = [
     973319206714081374
-] #992058629517742080
+]
 
 Commands = {
     "$help":"Bare bones help command, displays all of the commands, and sometimes more then that. PS; your kinda using it right now...",
