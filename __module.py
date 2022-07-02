@@ -10,6 +10,9 @@ import discord
 import psutil
 from discord.ext import commands
 
+# Not the time online, its the start time of the bot.
+TIMEONLINE = time.time()
+
 # MAIN VARIABLES
 MAINPATH = str(os.path.dirname(os.path.abspath(__file__))).replace("\\","/") + "/"
 with open(f"{MAINPATH}TOKEN.txt", "r") as f:
@@ -21,8 +24,7 @@ VERSION = 4.0
 responder = commands.Bot(command_prefix='$',help_command=None)
 
 # Lists
-Banned_ids = [
-]
+Banned_ids = []
 
 ADMINS = []
 with open(f"{MAINPATH}ADMINS.txt", "r") as f:
@@ -32,6 +34,8 @@ with open(f"{MAINPATH}ADMINS.txt", "r") as f:
 COOLGUILDS = [
     973319206714081374
 ] #992058629517742080
+
+ChannelsInUse = []
 
 Commands = {
     "$help":"Bare bones help command, displays all of the commands, and sometimes more then that. PS; your kinda using it right now...",
@@ -49,6 +53,7 @@ Commands = {
 
 eightball_answers = ["It is certain.","It is decidedly so.","Without a doubt.","Yes - definitely.","You may rely on it.","As I see it, yes.","Most likely.","Outlook good.","Yes.","Signs point to yes.","Reply hazy, try again.","Ask again later.","Better not tell you now.","Cannot predict now.","Concentrate and ask again.","Don't count on it.","My reply is no.","My sources say no.","Outlook not so good.","Very doubtful."]
 
+### RETURNING OBJECTS ### ------------------------------------------------------------------------------------------------------------------------------
 class SimpleEmbed:
     def __init__(self,t,des=None):
         self.des = des
@@ -68,6 +73,15 @@ class ReturnInfo:
         except:
             return f"{self.ctx.author} with the id of {self.ctx.author.id}"
 
+class ChannelInUse:
+    def __init__(self,ctx):
+        self.ctx = ctx
+    def rn(self):
+        if self.ctx.channel.id in ChannelsInUse:
+            return True
+        else:
+            return False
+
 class ReturnGuildOrAuthor:
     def __init__(self,ctx):
         self.ctx = ctx
@@ -77,7 +91,7 @@ class ReturnGuildOrAuthor:
         except:
             return self.author.id
 
-### TRUST ISSUES GAME CLASS
+### TRUST ISSUES GAME CLASS --------------------------------------------------------------------------------------------------------------------
 class TrustIssuesGame:
     def __init__(self,msg):
         self.msg = msg
@@ -156,7 +170,7 @@ class TrustIssuesGame:
         Stats_Embed.add_field(name="percentage of people who said 'no'",value=f"{self.no/(self.yes+self.no)*100}%",inline=False)
         await self.msg.channel.send(embed=Stats_Embed)
 
-### SEND PHOTO FOR $PHOTO
+### SEND PHOTO FOR $PHOTO --------------------------------------------------------------------------------------------------------------------
 class PersonalPhotoExport:
     def __init__(self,msg) -> None:
         self.msg = msg
@@ -169,7 +183,7 @@ class PersonalPhotoExport:
             await a.delete()
 
 
-### SAVE FOR $PHOTO
+### SAVE FOR $PHOTO --------------------------------------------------------------------------------------------------------------------
 class PersonalPhotoImport:
     def __init__(self,msg) -> None:
         try:
@@ -201,6 +215,8 @@ class PersonalPhotoImport:
             await asyncio.sleep(10)
             await self.file.delete()
 
+
+### BLACKJACK ### --------------------------------------------------------------------------------------------------------------------
 class BlackjackGame:
     def __init__(self,msg):
 
@@ -276,6 +292,8 @@ class BlackjackGame:
             newembed.add_field(name=f"Sum = {sum(player[1:])}",value=f"{user.mention}",inline=True)
         await self.msg.channel.send(embed=newembed)
 
+
+### QUOTES ### --------------------------------------------------------------------------------------------------------------------
 class Quote:
     def __init__(self,msg) -> None:
         self.msg = msg
@@ -288,16 +306,18 @@ class Quote:
         except:
             await self.msg.channel.send(f"{self.quote}")
 
+### Eight Ball ### --------------------------------------------------------------------------------------------------------------------
 class EightBall:
     def __init__(self,msg) -> None:
         self.msg = msg
 
     async def Send(self):
-        await self.msg.channel.send(f"What is your question? ")
+        w = await self.msg.channel.send(embed=SimpleEmbed(f"What is your question? ").rn())
         self.question = await responder.wait_for("message",timeout=50,check=lambda msg: msg.author.id != responder.user.id)
         await self.msg.channel.send(f"{random.choice(eightball_answers)}")
+        await w.delete()
 
-
+### RPS ### --------------------------------------------------------------------------------------------------------------------
 class RPS:
     def __init__(self,msg) -> None:
         self.msg = msg
@@ -330,6 +350,7 @@ class RPS:
         elif self.user_choice == self.bot_choice:
             await self.msg.channel.send(f"It's a tie!")
 
+### SURVEY ### --------------------------------------------------------------------------------------------------------------------
 class Survey:
     def __init__(self,msg) -> None:
         self.msg = msg
@@ -370,6 +391,7 @@ class Survey:
             self.stats_embed.add_field(name="Total",value=f"{self.total}",inline=False)
             await self.msg.channel.send(embed=self.stats_embed)
 
+### PENISMEASURER ### --------------------------------------------------------------------------------------------------------------------
 class PenisMeasurer:
     def __init__(self,msg) -> None:
         self.msg = msg
@@ -380,6 +402,7 @@ class PenisMeasurer:
         self.ppsizeembed = discord.Embed(title=f"{self.msg.author}'s penis size",description="8{}D".format("="*self.l),color=0xdc00ff)
         await self.msg.channel.send(embed=self.ppsizeembed)
 
+# LATER VC PLAYING BOT ### --------------------------------
 class MusicPlayer:
     def __init__(self,msg):
         print("yes")
@@ -391,4 +414,5 @@ class MusicPlayer:
         if voice_channel != None:
             self.channel = voice_channel.name
             self.vc = await voice_channel.connect()
-            # play music BUT I DONT KNOW HOW TOO GFSDGNSRIFHDVEUSDVFYESDVGFVUES
+            # play music
+
