@@ -1,11 +1,13 @@
 from __module import *
 
-# Penis measurer ------------------------------------------------------------------------------------------------------------------------------
+# rock paper scissors ------------------------------------------------------------------------------------------------------------------------------
 @responder.command()
-async def pp(ctx):
+async def rps(ctx):
     try:
-        NewPP = PenisMeasurer(ctx)
-        await NewPP.Send()
+        NewRPS = RPS(ctx)
+        await NewRPS.UserTurn()
+        await NewRPS.BotTurn()
+        await NewRPS.Winner()
     finally:
         try:
             # if not a dm channel, but a server channel

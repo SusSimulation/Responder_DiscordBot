@@ -24,18 +24,16 @@ async def info(ctx):
             # Waiting for user to react with the ❌ emoji.
             await responder.wait_for("reaction_add",timeout=20,check=lambda reaction,user: reaction.emoji == "❌" and user == ctx.author and e == reaction.message)
             # When user does react with the ❌ emoji, the embeded message will be deleted.
-            await e.delete()
+            try:
+                await e.delete()
+            except discord.errors.NotFound:
+                pass
         except asyncio.TimeoutError:
-            # If the user does not react with the ❌ emoji, the reaction will be removed from the embed.
-            await e.remove_reaction("❌",responder.user)
-    except Exception as e:
-        # If there is a super big error, the error will be posted in that channel, and along in the dms of JAZZYJAZZ.
-        # Fetch 'me'
-        JAZZYJAZZ = await responder.fetch_user(ADMINS[0])
-        # Send the error in the dms of JAZZYJAZZ
-        await JAZZYJAZZ.send(embed=SimpleEmbed("Yay! Error!",des=f"({e}) Error was raised in {ReturnInfo(ctx).rn()}").rn())
-        # Send the error in the channel
-        await ctx.channel.send(embed=SimpleEmbed("Unknown Error",des=f"{e}").rn())
+            try:
+                # If the user does not react with the ❌ emoji, the reaction will be removed from the embed.
+                await e.remove_reaction("❌",responder.user)
+            except discord.errors.NotFound:
+                pass
     finally:
         try:
             # if not a dm channel, but a server channel

@@ -9,6 +9,7 @@ from subprocess import call
 import discord
 import psutil
 from discord.ext import commands
+from sympy import Add
 
 # Not the time online, its the start time of the bot.
 TIMEONLINE = time.time()
@@ -39,7 +40,7 @@ ChannelsInUse = []
 
 Commands = {
     "$help":"Bare bones help command, displays all of the commands, and sometimes more then that. PS; your kinda using it right now...",
-    "$ti": "Trust issues game; A game where you ask a question and get multiple fully anonymous awnsers, it will show the statistics of the question and how much percent said 'yes' or 'no'.",
+    "$ti": "Trust issues game; A game where you ask a question and get multiple fully anonymous anwsers, it will show the statistics of the question and how much percent said 'yes' or 'no'. ( FAN FAVORITE GAME )",
     "$photo": "Sends a random photo, only works in a few servers.",
     "$add": "Adds a photo to the command; $photo",
     "$blackjack": "A game where you play blackjack, start the game by typing $blackjack then deal yourself in by typing 'deal' to start type; 'start' and then the game starts.",
@@ -63,6 +64,17 @@ class SimpleEmbed:
             return discord.Embed(title=self.t,color=0xdc00ff)
         else:
             return discord.Embed(title=self.t,description=self.des,color=0xdc00ff)
+
+class AddAudit:
+    def __init__(self,info=None):
+        self.info = info
+        self.Print()
+    def Print(self):
+        self.msg = f' {self.info} '
+        print("-"*(len(self.msg)+2))
+        print(f"|{self.msg}|")
+        print("-"*(len(self.msg)+2))
+
 
 class ReturnInfo:
     def __init__(self,ctx):
@@ -108,12 +120,12 @@ class TrustIssuesGame:
 
     
     async def GetPeople(self):
-        Reaction_attachment = await self.msg.channel.send(embed=SimpleEmbed("How many people are playing? ( 10 is the max )",des="To play; react to the thumbs up emoji attached to this message. To start the game react to the flag.").rn())
+        Reaction_attachment = await self.msg.channel.send(embed=SimpleEmbed("How many people are playing? ( 10 is the max )",des="To play; react to the thumbs up emoji attached to this message. To start the game react to the flag. You may need to re-react to the reaction.").rn())
         await Reaction_attachment.add_reaction("👍")
         await Reaction_attachment.add_reaction("🏁")
         try:
             for _ in range(10):
-                reaction, user = await responder.wait_for('reaction_add', timeout = 100,check=lambda reaction,user: reaction.emoji == "👍" and user.id != BOTID and user.id not in self.players and reaction.message.channel.id == self.msg.channel.id or user.id != BOTID and user.id in self.players and reaction.message.channel.id == self.msg.channel.id)
+                reaction, user = await responder.wait_for('reaction_add', timeout = 100,check=lambda reaction,user: reaction.emoji == "👍" and user.id != BOTID and user.id not in self.players and reaction.message.channel.id == self.msg.channel.id or user.id in self.players and reaction.message.channel.id == self.msg.channel.id and reaction.emoji == "🏁" and self.msg.author.id == user.id)
                 
                 if str(reaction.emoji) == "👍":
                     self.players.append(user.id)
@@ -154,11 +166,13 @@ class TrustIssuesGame:
             try:
                 m = await responder.wait_for('message',timeout=30,check=check)
                 
-                if m.content == "yes":
+                if m.content.lower() == "yes":
                     self.yes += 1
 
-                elif m.content == "no":
+                elif m.content.lower() == "no":
                     self.no += 1
+                await fuser.send(embed=SimpleEmbed("Your answer has been received!").rn())
+                AddAudit(f"{fuser.name} has answered with {m.content}")
 
                 await self.msg.channel.send(embed = SimpleEmbed(f"{m.author.name} has answered.").rn())
             except asyncio.TimeoutError:
@@ -359,9 +373,13 @@ class Survey:
         self.question = None
     
     async def Question(self):
-        self.whatisyourquestionembed = discord.Embed(title="What is your question?",description="Type your question in this question.",color=0xdc00ff)
-        self.e = await self.msg.channel.send(embed=self.whatisyourquestionembed)
-        self.am = await responder.wait_for("message",timeout=50,check=lambda msg: msg.author.id != responder.user.id and msg.author.id == self.msg.author.id)
+        try:
+            self.whatisyourquestionembed = discord.Embed(title="What is your question?",description="Type your question in this question.",color=0xdc00ff)
+            self.e = await self.msg.channel.send(embed=self.whatisyourquestionembed)
+            self.am = await responder.wait_for("message",timeout=50,check=lambda msg: msg.author.id != responder.user.id and msg.author.id == self.msg.author.id)
+        except asyncio.TimeoutError:
+            await self.msg.channel.send(f"{self.msg.author.mention} you took too long to answer!")
+            return False
 
     async def Answer(self):
         await self.am.delete()

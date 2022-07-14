@@ -11,12 +11,5 @@ async def on_ready():
         print("-"*40)
         # setting bots status as lisining to $help & $info
         await responder.change_presence(activity=discord.Game(name=f"$help | $info"))
-    except Exception as e:
-        # If there is a super big error, the error will be posted in that channel, and along in the dms of JAZZYJAZZ.
-        # Fetch 'me'
-        JAZZYJAZZ = await responder.fetch_user(ADMINS[0])
-        # Send the error in the dms of JAZZYJAZZ
-        await JAZZYJAZZ.send(embed=SimpleEmbed("Yay! Error!",des=f"({e}) Error was raised while logging in."))
-        exit()
     finally:
         return

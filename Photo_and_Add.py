@@ -7,15 +7,6 @@ async def photo(ctx):
         if ReturnGuildOrAuthor(ctx).rn() in COOLGUILDS:
             SendPhoto = PersonalPhotoExport(ctx)
             await SendPhoto.SendRandomPhoto()
-    except Exception as e:
-        # If there is a super big error, the error will be posted in that channel, and along in the dms of JAZZYJAZZ.
-        # Fetch 'me'
-        JAZZYJAZZ = await responder.fetch_user(ADMINS[0])
-        # Send the error in the dms of JAZZYJAZZ
-        await JAZZYJAZZ.send(embed=SimpleEmbed("Yay! Error!",des=f"({e}) Error was raised in {ReturnInfo(ctx).rn()}").rn())
-        # Send the error in the channel
-        await ctx.channel.send(embed=SimpleEmbed("Unknown Error",des=f"{e}").rn())
-
     finally:
         try:
             # if not a dm channel, but a server channel
@@ -32,14 +23,6 @@ async def add(ctx):
         if ReturnGuildOrAuthor(ctx).rn() in COOLGUILDS:
             ImportPhoto = PersonalPhotoImport(ctx)
             await ImportPhoto.SavePhoto()
-    except Exception as e:
-        # If there is a super big error, the error will be posted in that channel, and along in the dms of JAZZYJAZZ.
-        # Fetch 'me'
-        JAZZYJAZZ = await responder.fetch_user(ADMINS[0])
-        # Send the error in the dms of JAZZYJAZZ
-        await JAZZYJAZZ.send(embed=SimpleEmbed("Yay! Error!",des=f"({e}) Error was raised in {ReturnInfo(ctx).rn()}").rn())
-        # Send the error in the channel
-        await ctx.channel.send(embed=SimpleEmbed("Unknown Error",des=f"{e}").rn())
     finally:
         try:
             # if not a dm channel, but a server channel

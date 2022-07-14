@@ -28,13 +28,5 @@ async def help(ctx):
         except asyncio.TimeoutError:
             # If the user does not react with the ❌ emoji, the reaction will be removed from the embed.
             await HelpCommandEmbed.remove_reaction("❌",responder.user)
-    except Exception as e:
-        # If there is a super big error, the error will be posted in that channel, and along in the dms of JAZZYJAZZ.
-        # Fetch 'me'
-        JAZZYJAZZ = await responder.fetch_user(ADMINS[0])
-        # Send the error in the dms of JAZZYJAZZ
-        await JAZZYJAZZ.send(embed=SimpleEmbed("Yay! Error!",des=f"({e}) NAME = {e.__class__.__name__} Error was raised in {ReturnInfo(ctx).rn()}").rn())
-        # Send the error in the channel
-        await ctx.channel.send(embed=SimpleEmbed("Unknown Error",des=f"{e}").rn())
     finally:
         return

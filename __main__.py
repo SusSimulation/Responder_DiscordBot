@@ -13,14 +13,16 @@ import Photo_and_Add
 import BlackJack
 import Quote
 import EightBall
-import Survey
+import RPS
 import PenisMeasurement
-
+import Zelda
+import Hen
+import Survey
 
 ### MAIN CODE ------------------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     try:
         responder.run(RESPONDERTOKEN)
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error on boot: {e.__class__.__name__}: {e}")
         quit()

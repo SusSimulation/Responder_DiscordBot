@@ -11,7 +11,5 @@ async def add_admin(ctx, user: discord.Member):
                 with open("{MAINPATH}ADMINS.txt", "w") as f:
                     f.write(str(ADMINS)+"\n")
                 await ctx.send(embed=SimpleEmbed("Yay!","This user is now an admin!").rn())
-    except Exception as e:
-        await ctx.send(embed=SimpleEmbed("Yay!","Error was raised while adding admin!").rn())
     finally:
         return
