@@ -19,6 +19,7 @@ with open(f"{MAINPATH}TOKEN.txt", "r") as f:
     RESPONDERTOKEN = f.read()
 VERSION = 4.0
 
+
 # MAIN DISCORD BOT
 responder = commands.Bot(command_prefix='$',help_command=None)
 
