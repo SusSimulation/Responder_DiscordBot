@@ -6,5 +6,5 @@
 	Consider this my 2.0 bot from Taotu_Bot.
 <a href="https://top.gg/bot/978821592668864583">
   <img src="https://top.gg/api/widget/978821592668864583.svg">
-  <img src="(https://user-images.githubusercontent.com/104875314/188255257-a5c58802-db44-4c74-9a03-9a7c13f38b1f.png">
+  <img src="https://user-images.githubusercontent.com/104875314/188255257-a5c58802-db44-4c74-9a03-9a7c13f38b1f.png">
 </a>
