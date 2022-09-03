@@ -1,7 +1,7 @@
 from __module import *
 import random
 
-Sayings = ["Thanks for joining!","Feel free to do anything you would like!","Thanks for joining us.","Happy to see you here!"]
+Sayings = ["Thanks for joining!","Feel free to do anything you would like!","Thanks for joining us.","Happy to see you here!","We appreciate your support."]
 
 @responder.event
 async def on_member_join(member):
@@ -12,5 +12,8 @@ async def on_member_join(member):
         await responder.get_channel(992110942156505099).send(f"{member.mention} welcome! {Sayings[random.randint(0,len(Sayings)-1)]}")
         await responder.get_channel(992110942156505099).send(embed=SimpleEmbed(t=f"{member.name} has joined!",des=f"I have assigned you the role: {role.name}.").rn())
         await member.add_roles(role)
+    # Still figuring it out...
+    elif member.guild.id in WelcomeGuilds:
+        pass
     return
 
