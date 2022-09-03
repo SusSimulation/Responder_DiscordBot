@@ -1,6 +1,6 @@
 import ErrorFilter
 import OnReady
-import On_join
+import CoolEvents
 from __module import *
 from Admin_controls import AdminControls
 from ExportPhotos import PostAndSaves

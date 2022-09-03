@@ -19,10 +19,9 @@ with open(f"{MAINPATH}TOKEN.txt", "r") as f:
     RESPONDERTOKEN = f.read()
 VERSION = 4.0
 
-
+intents = discord.Intents().all()
 # MAIN DISCORD BOT
-responder = commands.Bot(command_prefix='$',help_command=None)
-
+responder = commands.Bot(command_prefix='$',help_command=None,intents=intents)
 
 ADMINS = [800558571129274450]
 
@@ -82,7 +81,7 @@ class ReturnGuildOrAuthor:
             return self.ctx.author.id
 
 ### TRUST ISSUES GAME CLASS --------------------------------------------------------------------------------------------------------------------
-class TrustIssuesGame:
+class TrustIssuesGameC:
     def __init__(self,msg):
         self.msg = msg
         self.question = None
@@ -90,11 +89,13 @@ class TrustIssuesGame:
         self.yes = 0
         self.no = 0
         self.players = []
+        self.delmsg = []
     
     async def MainTable(self):
         if await self.GetPeople() != False:
             if await self.GetQuestion() != False:
                 await self.Results()
+        
 
     
     async def GetPeople(self):
@@ -104,9 +105,10 @@ class TrustIssuesGame:
 
         try:
             self.players.append(self.msg.author.id)
-            await self.msg.channel.send(f"{self.msg.author.name} has joined the game.")
+            starterjoined = await self.msg.channel.send(f"{self.msg.author.name} started and joined the game.")
+            self.delmsg.append(starterjoined)
             for _ in range(10):
-                reaction, user = await responder.wait_for('reaction_add', timeout = 100,check=lambda reaction,user: reaction.emoji == "👍" and user.id != BOTID and user.id not in self.players and reaction.message.channel.id == self.msg.channel.id or user.id in self.players and reaction.message.channel.id == self.msg.channel.id and reaction.emoji == "🏁" and self.msg.author.id == user.id)
+                reaction, user = await responder.wait_for('reaction_add', timeout = 100,check=lambda reaction,user: reaction.emoji == "👍" and user.id != responder.user.id and user.id not in self.players and reaction.message.channel.id == self.msg.channel.id or user.id in self.players and reaction.message.channel.id == self.msg.channel.id and reaction.emoji == "🏁" and self.msg.author.id == user.id)
                 
                 if str(reaction.emoji) == "👍":
                     self.players.append(user.id)
@@ -114,31 +116,39 @@ class TrustIssuesGame:
                 elif str(reaction.emoji) == "🏁":
                     break
 
-                await self.msg.channel.send(f"{user.name} has joined the game.")
+                joinedthegamemsg = await self.msg.channel.send(f"{user.name} joined.")
+                self.delmsg.append(joinedthegamemsg)
             if len(self.players) <= 0:
                 await self.msg.channel.send("No one has joined the game.")
                 return False
 
-            await self.msg.channel.send(f"{len(self.players)} people have joined the game.")
+            self.playerjoined = await self.msg.channel.send(f"{len(self.players)} people have joined the game.")
+            await Reaction_attachment.delete()
             return True
         except asyncio.TimeoutError:
             await self.msg.channel.send("Game timed out, super sadly...")
             return False
+        
 
     async def GetQuestion(self):
-        await self.msg.channel.send(embed=SimpleEmbed("What is your question?",des="Type your question in this channel.").rn())
+        self.questionembed = await self.msg.channel.send(embed=SimpleEmbed("What is your question?",des="Type your question in this channel.").rn())
+        self.delmsg.append(self.questionembed)
         try:
             self.q = await responder.wait_for('message',timeout=100,check=lambda message:message.author.id == self.msg.author.id and message.channel.id == self.msg.channel.id and message.content != "")
             self.question = self.q.content
+            await self.q.delete()
+            await self.playerjoined.delete()
             return True
         except asyncio.TimeoutError:
             return False
 
     async def Results(self):
-        await self.msg.channel.send(embed=SimpleEmbed("Question:",des=self.question).rn())
+        questionembedtwo = await self.msg.channel.send(embed=SimpleEmbed("Question:",des=self.question).rn())
+        self.delmsg.append(questionembedtwo)
         for i, player in enumerate(self.players):
             fuser = await responder.fetch_user(player)
-            await self.msg.channel.send(embed=SimpleEmbed(f"Turn {i+1}",des=f"Waiting on {fuser.mention}, their turn will be skipped in 30 seconds.").rn())
+            turndisplayembed = await self.msg.channel.send(embed=SimpleEmbed(f"Turn {i+1}",des=f"Waiting on {fuser.mention}, their turn will be skipped in 30 seconds.").rn())
+            self.delmsg.append(turndisplayembed)
             await fuser.send(embed= SimpleEmbed("Type 'yes' or 'no'",des=f"Question: {self.question}").rn() )
             def check(m):
                 return m.author.id == player and m.author.id != responder.user.id and m.content.lower() in ["no","yes"] and m.channel.id == fuser.dm_channel.id
@@ -150,17 +160,24 @@ class TrustIssuesGame:
 
                 elif m.content.lower() == "no":
                     self.no += 1
+                
                 await fuser.send(embed=SimpleEmbed("Your answer has been received!").rn())
                 AddAudit(f"{fuser.name} has answered with {m.content}")
 
-                await self.msg.channel.send(embed = SimpleEmbed(f"{m.author.name} has answered.").rn())
+                hasawnseredembed = await self.msg.channel.send(embed = SimpleEmbed(f"{m.author.name} has answered.").rn())
+                self.delmsg.append(hasawnseredembed)
             except asyncio.TimeoutError:
-                await self.msg.channel.send(embed = SimpleEmbed(f"{fuser.name} has been skipped. Didn't awnser in time").rn())
-        Stats_Embed = discord.Embed(title="Stats",color=0xdc00ff)
-        Stats_Embed.add_field(name="People who said 'yes'",value=self.yes,inline=False)
-        Stats_Embed.add_field(name="People who said 'no'",value=self.no,inline=False)
-        Stats_Embed.add_field(name="percentage of people who said 'yes'",value=f"{self.yes//(self.yes+self.no)*100}%",inline=False)
-        Stats_Embed.add_field(name="percentage of people who said 'no'",value=f"{self.no//(self.yes+self.no)*100}%",inline=False)
-        await self.msg.channel.send(embed=Stats_Embed)
+                hasnotawnseredembed =await self.msg.channel.send(embed = SimpleEmbed(f"{fuser.name} has been skipped. Didn't awnser in time").rn())
+                self.delmsg.append(hasnotawnseredembed)
+        if not self.yes+self.no == 0:
+            Stats_Embed = discord.Embed(title="Stats",description=f"Question = {self.question}",color=0xdc00ff)
+            Stats_Embed.add_field(name="People who said 'yes'",value=f"{self.yes} / {self.yes//(self.yes+self.no)*100}%",inline=True)
+            Stats_Embed.add_field(name="People who said 'no'",value=f"{self.no} / {self.no//(self.yes+self.no)*100}%",inline=True)
+            await self.msg.channel.send(embed=Stats_Embed)
+        else:
+            Stats_Embed = discord.Embed(title="No one finished the game.",description=f"question = {self.question}",color=0xdc00ff)
+            await asyncio.sleep(10)
+        for l in self.delmsg:
+            await l.delete()
 
 

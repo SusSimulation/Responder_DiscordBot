@@ -1,4 +1,3 @@
-from decimal import DivisionByZero
 from __module import *
 
 class TrustIssuesGame(commands.Cog):
@@ -11,10 +10,8 @@ class TrustIssuesGame(commands.Cog):
         try:
             AddAudit(f"{ctx.author} started $ti at {datetime.datetime.now()} in {ctx.channel}")
             if not isinstance(ctx.channel,discord.DMChannel):
-                ChannelsInUse.append(ctx.channel.id)
-                await TrustIssuesGame(ctx).MainTable()
-        except DivisionByZero:
-            pass
+                TINewGame = TrustIssuesGameC(ctx)
+                await TINewGame.MainTable()
         finally:
             try:
                 # if not a dm channel, but a server channel
@@ -23,6 +20,4 @@ class TrustIssuesGame(commands.Cog):
                     await ctx.message.delete()
             except discord.errors.NotFound:
                 pass
-            if ctx.channel.id in ChannelsInUse:
-                ChannelsInUse.remove(ctx.channel.id)
             return
