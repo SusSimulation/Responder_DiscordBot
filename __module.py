@@ -23,7 +23,7 @@ intents = discord.Intents().all()
 # MAIN DISCORD BOT
 responder = commands.Bot(command_prefix='$',help_command=None,intents=intents)
 
-ADMINS = [800558571129274450]
+ADMINS = [800558571129274450,879210381661335592]
 
 COOLGUILDS = [
 1012146008341360721
@@ -32,12 +32,12 @@ COOLGUILDS = [
 ChannelsInUse = []
 
 Commands = {
-    "$help":"Bare bones help command and display the commands, and sometimes more. PS; you're kinda using it right now...",
-    "$ti": 'Trust issues is a game designed for developing trust issues in your fellow friends. Start off by typing a custom question, then watch the bot count all of the responses and let everyone know what they said without knowing who said it.',
-    "$myid":"Ever forget your ID?",
-    "$serverinfo":"Info on the server.",
-    "$channelinfo":"Info on the current channel",
-    "$info":"Gives you info about the bot. ( Has more tenderness than $help )"
+    "$help" : "Bare bones help command and display the commands, and sometimes more. PS; you're kinda using it right now...",
+    "$ti" : "(PS: The difference in $ti and $tic is that $ti only allows 'yes' or no answers, comparing to $tic it allows all types of answers) Trust issues is a game designed for developing trust issues in your fellow friends. Start off by typing a custom question, then watch the bot count all of the responses and let everyone know what they said without knowing who said it.",
+    "$tic" : 'Trust issues is a game designed for developing trust issues in your fellow friends. Start off by typing a custom question, then watch the bot count all of the responses and let everyone know what they said without knowing who said it.',
+    "$myid" : "Ever forget your ID?",
+    "$serverinfo" : "Info on the server.",
+    "$channelinfo" : "Info on the current channel",
 }
 
 
