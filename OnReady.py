@@ -10,6 +10,6 @@ async def on_ready():
         print(f"I am in {len([guild for guild in responder.guilds])} guilds!")
         print("-"*40)
         # setting bots status as lisining to $help & $info
-        await responder.change_presence(activity=discord.Game(name=f"$help | $info"))
+        await responder.change_presence(activity=discord.Game(name=f"$help | $ti"))
     finally:
         return

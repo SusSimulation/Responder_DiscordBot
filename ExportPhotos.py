@@ -70,15 +70,15 @@ class PostAndSaves(commands.Cog):
     async def hen(self,ctx):
         try:
             AddAudit(f"{ctx.author} started Hen at {datetime.datetime.now()} in {ctx.channel}")
-            while True:
-                try:
-                    file = random.choice(os.listdir(f"{MAINPATH}HenFiles"))
-                    if not file.endswith(".url"):
-                        f = await ctx.channel.send(file=discord.File(f"{MAINPATH}HenFiles/{file}"))
-                        break
-                except:
-                    pass
-
+            if ctx.channel.is_nsfw():
+                while True:
+                    try:
+                        file = random.choice(os.listdir(f"{MAINPATH}HenFiles"))
+                        if not file.endswith(".url"):
+                            f = await ctx.channel.send(file=discord.File(f"{MAINPATH}HenFiles/{file}"))
+                            break
+                    except:
+                        pass
         finally:
             try:
                 # if not a dm channel, but a server channel
@@ -95,7 +95,8 @@ class PostAndSaves(commands.Cog):
     async def mha(self,ctx):
         try:
             AddAudit(f"{ctx.author} started MHA at {datetime.datetime.now()} in {ctx.channel}")
-            await MHAExport(ctx).SendRandomPhoto()
+            if ctx.channel.is_nsfw():
+                await MHAExport(ctx).SendRandomPhoto()
         finally:
             await ctx.message.delete()
 
@@ -139,12 +140,13 @@ class PostAndSaves(commands.Cog):
     async def poky(self,ctx):
         try:
             AddAudit(f"{ctx.author} started $Poky at {datetime.datetime.now()} in {ctx.channel}")
-            try:
-                File = random.choice(os.listdir(f"{MAINPATH}Poky"))
-                a = await ctx.channel.send(file=discord.File(f"{MAINPATH}Poky/{File}"))
-            finally:
-                await asyncio.sleep(3600)
-                await a.delete()
+            if ctx.channel.is_nsfw():
+                try:
+                    File = random.choice(os.listdir(f"{MAINPATH}Poky"))
+                    a = await ctx.channel.send(file=discord.File(f"{MAINPATH}Poky/{File}"))
+                finally:
+                    await asyncio.sleep(3600)
+                    await a.delete()
         finally:
             await ctx.message.delete()
 
