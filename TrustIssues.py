@@ -20,6 +20,7 @@ class TrustIssuesGameC:
         Reaction_attachment = await self.msg.channel.send(embed=SimpleEmbed("How many people are playing? ( 10 is the max )",des="To play, react to the thumbs-up emoji attached to this message. To start the game, react to the flag. You may need to re-react to the reaction. The person who initially started the game won't need to react to the emoji.").rn())
         await Reaction_attachment.add_reaction("👍")
         await Reaction_attachment.add_reaction("🏁")
+        self.delmsg.append(Reaction_attachment)
 
         try:
             self.players.append(self.msg.author.id)
@@ -114,6 +115,7 @@ class TrustIssuesGameC_OLD_ONE:
         Reaction_attachment = await self.msg.channel.send(embed=SimpleEmbed("How many people are playing? ( 10 is the max )",des="To play, react to the thumbs-up emoji attached to this message. To start the game, react to the flag. You may need to re-react to the reaction. The person who initially started the game won't need to react to the emoji.").rn())
         await Reaction_attachment.add_reaction("👍")
         await Reaction_attachment.add_reaction("🏁")
+        self.delmsg.append(Reaction_attachment)
 
         try:
             self.players.append(self.msg.author.id)
