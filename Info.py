@@ -1,5 +1,5 @@
 from __module import *
-
+import shutil
 
 class Info(commands.Cog):
     def __init__(self,client) -> None:

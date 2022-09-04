@@ -35,7 +35,7 @@ Commands = {
     "$ti and $tic" : "(PS: The difference in $ti and $tic is that $ti only allows 'yes' or no answers, comparing to $tic it allows all types of answers) Trust issues is a game designed for developing trust issues in your fellow friends. Start off by typing a custom question, then watch the bot count all of the responses and let everyone know what they said without knowing who said it.",
     "$myid" : "Ever forget your ID?",
     "$serverinfo" : "Info on the server.",
-    "$channelinfo" : "Info on the current channel",
+    "$channelinfo" : "Info on the current channel"
 }
 
 class SimpleEmbed:
