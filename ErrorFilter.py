@@ -14,8 +14,6 @@ async def on_command_error(ctx, error):
         return
 
     # if the pay load is to big HTTPEXCEPTION
-    if error.__class__.__name__ == "HTTPException":
-        return
 
     if error.__class__.__name__ == "CommandInvokeError":
         return

@@ -196,7 +196,7 @@ class TrustIssuesGame(commands.Cog):
         self.client = client
 
     # Trust Issues Game ------------------------------------------------------------------------------------------------------------------------------
-    @commands.command()
+    @commands.command(aliases=["trust_issues_custom","trustissuescustom"])
     async def tic(self,ctx):
         try:
             AddAudit(f"{ctx.author} started $ti at {datetime.datetime.now()} in {ctx.channel}")
@@ -213,7 +213,7 @@ class TrustIssuesGame(commands.Cog):
                 pass
             return
 
-    @commands.command()
+    @commands.command(aliases=["trust_issues","trustissues"])
     async def ti(self,ctx):
         try:
             AddAudit(f"{ctx.author} started $ti at {datetime.datetime.now()} in {ctx.channel}")
