@@ -17,7 +17,7 @@ class TrustIssuesGameC:
         
 
     async def GetPeople(self):
-        Reaction_attachment = await self.msg.channel.send(embed=SimpleEmbed("How many people are playing? ( 10 is the max )",des="To play, react to the thumbs-up emoji attached to this message. To start the game, react to the flag. You may need to re-react to the reaction. The person who initially started the game won't need to react to the emoji.").rn())
+        Reaction_attachment = await self.msg.channel.send(embed=SimpleEmbed("How many people are playing? ( 100 is the max )",des="To play, react to the thumbs-up emoji attached to this message. To start the game, react to the flag. You may need to re-react to the reaction. The person who initially started the game won't need to react to the emoji.").rn())
         await Reaction_attachment.add_reaction("👍")
         await Reaction_attachment.add_reaction("🏁")
         self.delmsg.append(Reaction_attachment)
@@ -26,7 +26,7 @@ class TrustIssuesGameC:
             self.players.append(self.msg.author.id)
             starterjoined = await self.msg.channel.send(f"{self.msg.author.name} started and joined the game.")
             self.delmsg.append(starterjoined)
-            for _ in range(10):
+            for _ in range(100):
                 reaction, user = await responder.wait_for('reaction_add', timeout = 100,check=lambda reaction,user: reaction.emoji == "👍" and user.id != responder.user.id and user.id not in self.players and reaction.message.channel.id == self.msg.channel.id or user.id in self.players and reaction.message.channel.id == self.msg.channel.id and reaction.emoji == "🏁" and self.msg.author.id == user.id)
                 
                 if str(reaction.emoji) == "👍":
@@ -46,7 +46,7 @@ class TrustIssuesGameC:
         except asyncio.TimeoutError:
             await self.msg.channel.send("Game timed out, super sadly...")
             return False
-        
+       
 
     async def GetQuestion(self):
         self.questionembed = await self.msg.channel.send(embed=SimpleEmbed("What is your question?",des="Type your question in this text channel.").rn())
@@ -63,15 +63,16 @@ class TrustIssuesGameC:
     async def Results(self):
         questionembedtwo = await self.msg.channel.send(embed=SimpleEmbed("Question:",des=self.question).rn())
         self.delmsg.append(questionembedtwo)
+        random.shuffle(self.players)
         for i, player in enumerate(self.players):
             fuser = await responder.fetch_user(player)
-            turndisplayembed = await self.msg.channel.send(embed=SimpleEmbed(f"Turn {i+1}",des=f"Waiting on {fuser.mention}, their turn will be skipped in 30 seconds.").rn())
+            turndisplayembed = await self.msg.channel.send(embed=SimpleEmbed(f"Turn {i+1}",des=f"Waiting on {fuser.mention}, their turn will be skipped in 90 seconds.").rn())
             self.delmsg.append(turndisplayembed)
-            await fuser.send(embed= SimpleEmbed("Type your answer cooresponding to the question below.",des=f"Question: {self.question}").rn() )
+            await fuser.send(embed= SimpleEmbed("Type your answer cooresponding to the question below. 1024 character limit.",des=f"Question: {self.question}").rn() )
             def check(m):
-                return m.author.id == player and m.author.id != responder.user.id and m.channel.id == fuser.dm_channel.id
+                return m.author.id == player and m.author.id != responder.user.id and m.channel.id == fuser.dm_channel.id and len(m.content.lower()) <= 1024
             try:
-                m = await responder.wait_for('message',timeout=30,check=check)
+                m = await responder.wait_for('message',timeout=90,check=check)
                 
                 self.answers.append(m.content)
                 
@@ -84,8 +85,9 @@ class TrustIssuesGameC:
                 self.delmsg.append(hasnotansweredembed)
         if not len(self.answers) == 0:
             Stats_Embed = discord.Embed(title="Stats",description=f"Question = {self.question}",color=0xff0000)
+            random.shuffle(self.answers)
             for response in self.answers:
-                Stats_Embed.add_field(name="Anonymous",value=response,inline=True)
+                Stats_Embed.add_field(name="Anonymous",value=response,inline=False)
             await self.msg.channel.send(embed=Stats_Embed)
         else:
             Stats_Embed = discord.Embed(title="No one finished the game.",description=f"question = {self.question}",color=0xff0000)
@@ -112,7 +114,7 @@ class TrustIssuesGameC_OLD_ONE:
 
     
     async def GetPeople(self):
-        Reaction_attachment = await self.msg.channel.send(embed=SimpleEmbed("How many people are playing? ( 10 is the max )",des="To play, react to the thumbs-up emoji attached to this message. To start the game, react to the flag. You may need to re-react to the reaction. The person who initially started the game won't need to react to the emoji.").rn())
+        Reaction_attachment = await self.msg.channel.send(embed=SimpleEmbed("How many people are playing? ( 100 is the max )",des="To play, react to the thumbs-up emoji attached to this message. To start the game, react to the flag. You may need to re-react to the reaction. The person who initially started the game won't need to react to the emoji.").rn())
         await Reaction_attachment.add_reaction("👍")
         await Reaction_attachment.add_reaction("🏁")
         self.delmsg.append(Reaction_attachment)
@@ -121,7 +123,7 @@ class TrustIssuesGameC_OLD_ONE:
             self.players.append(self.msg.author.id)
             starterjoined = await self.msg.channel.send(f"{self.msg.author.name} started and joined the game.")
             self.delmsg.append(starterjoined)
-            for _ in range(10):
+            for _ in range(100):
                 reaction, user = await responder.wait_for('reaction_add', timeout = 100,check=lambda reaction,user: reaction.emoji == "👍" and user.id != responder.user.id and user.id not in self.players and reaction.message.channel.id == self.msg.channel.id or user.id in self.players and reaction.message.channel.id == self.msg.channel.id and reaction.emoji == "🏁" and self.msg.author.id == user.id)
                 
                 if str(reaction.emoji) == "👍":
@@ -207,7 +209,6 @@ class TrustIssuesGame(commands.Cog):
                 await TINewGame.MainTable()
         finally:
             try:
-                
                 if not isinstance(ctx.channel, discord.DMChannel):
                     
                     await ctx.message.delete()

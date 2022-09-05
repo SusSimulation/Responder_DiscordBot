@@ -17,6 +17,13 @@ async def on_command_error(ctx, error):
 
     if error.__class__.__name__ == "CommandInvokeError":
         return
+    if error.__class__.__name__ == "MissingPermissions":
+        await ctx.channel.send(embed=SimpleEmbed("Unfortunately, I do not have the permission to do what you asked. MissingPermissions"))
+        return
+    
+    if error.__class__.__name__ == "BadArgument":
+        await ctx.channel.send(embed=SimpleEmbed(f"Bad argument!").rn())
+        return
     
     # If there is a super big error, the error will be posted in that channel, and along in the dms of JAZZYJAZZ.
     # Fetch 'me'

@@ -27,6 +27,9 @@ COOLGUILDS = [
 
 # not in use yet
 WelcomeGuilds = []
+# Need to extract info from .json file
+
+# add info to .json list.
 
     
 
@@ -77,3 +80,27 @@ class ReturnGuildOrAuthor:
         except:
             return self.ctx.author.id
 
+
+class WelcomeGuildsData:
+    def __init__(self) -> None:
+        self.filepath = f"{MAINPATH}/WelcomeGuilds.txt"
+
+    async def AddId(self,id):
+        with open(self.filepath,"w") as f: 
+            f.write(f"{id}\n") #!
+    async def ReturnList(self):
+        with open(self.filepath,"r") as f:
+            return [line for line in f]
+    async def RemoveId(self,id):
+        # Read file.txt
+        with open(self.filepath, 'r') as file:
+            text = file.read()
+
+
+        # Delete text and Write
+        with open(self.filepath, 'w') as file:
+            # Delete
+            new_text = text.replace(f'{id}', '')
+            # Write
+            file.write(new_text) #!
+    

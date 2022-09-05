@@ -12,6 +12,6 @@ class PurgeChannel(commands.Cog):
         except:
             await ctx.channel.send("Invaild number.")
         finally:
-            a = await ctx.channel.send(SimpleEmbed(f"Finished, Deleted {amount}").rn())
+            a = await ctx.channel.send(embed=SimpleEmbed(f"Done!").rn())
             await asyncio.sleep(10)
             await a.delete()
