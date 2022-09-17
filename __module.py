@@ -27,15 +27,13 @@ COOLGUILDS = [
 
 # not in use yet
 WelcomeGuilds = []
-# Need to extract info from .json file
-
-# add info to .json list.
-
+ChannelsInUse = []
     
 
 Commands = {
+    "$trustissues" : "Main game! Get fully anonymous answers from ANY question in the world! Your imagination is your limit.",
+    "$survey":"COMING SOON: A survey with 4 posible responses, the gamemaster will type the meaning for each emoji then it will post the results.",
     "$help" : "Bare bones help command and display the commands, and sometimes more. PS; you're kinda using it right now...",
-    "$ti and $tic" : "(PS: The difference in $ti and $tic is that $ti only allows 'yes' or no answers, comparing to $tic it allows all types of answers) Trust issues is a game designed for developing trust issues in your fellow friends. Start off by typing a custom question, then watch the bot count all of the responses and let everyone know what they said without knowing who said it.",
     "$myid" : "Ever forget your ID?",
     "$clear":"$clear (amount wanting to clear), command that will delete messages.",
     "$serverinfo" : "Info on the server.",

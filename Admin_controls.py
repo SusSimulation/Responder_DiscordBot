@@ -78,7 +78,7 @@ class AdminControls(commands.Cog):
                 Servers_Embed = discord.Embed(title=f"Servers",des=f"{ctx.message.author.mention} is sending the server names...",color=0x00ff00)
                 
                 for server in responder.guilds:
-                    Servers_Embed.add_field(name=server.name,value=server.id,inline=True)
+                    Servers_Embed.add_field(name=server.name,value=f"{server.member_count} users",inline=True)
                 
                 await ctx.channel.send(embed=Servers_Embed)
         finally:

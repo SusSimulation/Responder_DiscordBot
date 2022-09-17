@@ -11,12 +11,13 @@ from ServerInfos import ServerInfo  # with a sub-command $channelinfo.
 from TrustIssues import TrustIssuesGame # The main game, includes $ti and $tic.
 from Extra import StupidExtraStuff # Extra commands like; $myid.
 from Clear import PurgeChannel
+from Survey import Survey
 
 if __name__ == "__main__":
     # try these lines so just in case if it fails, before it dies it will print a message to let us know.
     try: 
         # all of the COGS
-        COGS = [StupidExtraStuff, PostAndSaves, TrustIssuesGame, AdminControls, Info, Help, ServerInfo,PurgeChannel]
+        COGS = [StupidExtraStuff, PostAndSaves, TrustIssuesGame, AdminControls, Info, Help, ServerInfo, PurgeChannel, Survey]
         # Iterate through all of the COGS.
         for c in COGS: 
             # adding the cog
