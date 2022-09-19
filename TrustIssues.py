@@ -1,5 +1,5 @@
 from __module import *
-
+import random
 class TrustIssuesGameC:
     def __init__(self,msg):
         self.msg = msg
@@ -135,14 +135,9 @@ class TrustIssuesGameC:
         if not len(self.answers) == 0:
             Stats_Embed = discord.Embed(title="Stats",description=f"Question = {self.question}",color=0xff0000)
             random.shuffle(self.answers)
-            for t in self.answers:
-                self.newanswers.append([f"{round(self.answers.count(t)/len(self.answers)*100,3)}%",t])
-                for i in self.answers:
-                    if i == t:
-                        self.answers.remove(i)
                     
-            for response in self.newanswers:
-                Stats_Embed.add_field(name=response[0],value=response[1],inline=True)
+            for response in self.answers:
+                Stats_Embed.add_field(name=["Cool kid","Anonymous","Person"][random.randint(0,2)],value=response,inline=True)
             await self.msg.channel.send(embed=Stats_Embed)
         else:
             Stats_Embed = discord.Embed(title="No one finished the game.",description=f"question = {self.question}",color=0xff0000)
@@ -156,30 +151,36 @@ class TrustIssuesGame(commands.Cog):
     # Trust Issues Game ------------------------------------------------------------------------------------------------------------------------------
     @commands.command(aliases=["trust_issues_custom","trustissuescustom","ti","trust_issues"])
     async def trustissues(self,ctx):
-        try:
-            INUSE = False
-            if not ctx.channel.id in ChannelsInUse:
-                ChannelsInUse.append(ctx.channel.id)
-                AddAudit(f"{ctx.author} started $ti at {datetime.datetime.now()} in {ctx.channel}")
-                if not isinstance(ctx.channel,discord.DMChannel):
-                    TINewGame = TrustIssuesGameC(ctx)
-                    await TINewGame.MainTable()
-            else:
-                INUSE = True
-                a = await ctx.channel.send("Channel already playing. Wait for the game to end.")
-        finally:
+        if ctx.guild.id == 1015537796414455808 and ctx.channel.id == 1015800454015356948 or ctx.guild.id != 1015537796414455808:
             try:
-                if not isinstance(ctx.channel, discord.DMChannel):
-                    await ctx.message.delete()
-            except discord.errors.NotFound:
-                pass
-            if not INUSE == True:
-                try:
-                    ChannelsInUse.remove(ctx.channel.id)
-                except:
-                    ChannelsInUse.clear()
-            else:
-                await asyncio.sleep(10)
-                await a.delete()
 
-            return
+                INUSE = False
+                if not ctx.channel.id in ChannelsInUse:
+                    ChannelsInUse.append(ctx.channel.id)
+                    AddAudit(f"{ctx.author} started $ti at {datetime.datetime.now()} in {ctx.channel}")
+                    if not isinstance(ctx.channel,discord.DMChannel):
+                        TINewGame = TrustIssuesGameC(ctx)
+                        await TINewGame.MainTable()
+                else:
+                    INUSE = True
+                    a = await ctx.channel.send("Channel already playing. Wait for the game to end.")
+            finally:
+                try:
+                    if not isinstance(ctx.channel, discord.DMChannel):
+                        await ctx.message.delete()
+                except discord.errors.NotFound:
+                    pass
+                if not INUSE == True:
+                    try:
+                        ChannelsInUse.remove(ctx.channel.id)
+                    except:
+                        ChannelsInUse.clear()
+                else:
+                    await asyncio.sleep(10)
+                    await a.delete()
+                return
+        else:
+            try:
+                await ctx.message.delete()
+            except:
+                pass
