@@ -151,13 +151,13 @@ class TrustIssuesGame(commands.Cog):
     # Trust Issues Game ------------------------------------------------------------------------------------------------------------------------------
     @commands.command(aliases=["trust_issues_custom","trustissuescustom","ti","trust_issues"])
     async def trustissues(self,ctx):
-        if ctx.guild.id == 1015537796414455808 and ctx.channel.id == 1015800454015356948 or ctx.guild.id != 1015537796414455808:
+        if ctx.channel.name in ["trust-issues","trustissues"]:
             try:
 
                 INUSE = False
                 if not ctx.channel.id in ChannelsInUse:
                     ChannelsInUse.append(ctx.channel.id)
-                    AddAudit(f"{ctx.author} started $ti at {datetime.datetime.now()} in {ctx.channel}")
+                    AddAudit(ctx=ctx,finished=False)
                     if not isinstance(ctx.channel,discord.DMChannel):
                         TINewGame = TrustIssuesGameC(ctx)
                         await TINewGame.MainTable()
@@ -166,11 +166,10 @@ class TrustIssuesGame(commands.Cog):
                     a = await ctx.channel.send("Channel already playing. Wait for the game to end.")
             finally:
                 try:
-                    if not isinstance(ctx.channel, discord.DMChannel):
-                        await ctx.message.delete()
-                except discord.errors.NotFound:
+                    await ctx.message.delete()
+                except:
                     pass
-                if not INUSE == True:
+                if INUSE != True:
                     try:
                         ChannelsInUse.remove(ctx.channel.id)
                     except:
@@ -178,9 +177,15 @@ class TrustIssuesGame(commands.Cog):
                 else:
                     await asyncio.sleep(10)
                     await a.delete()
+                AddAudit(ctx=ctx,finished=True)
                 return
         else:
+            await ctx.channel.send("https://discord.gg/h9sdWTrKDy")
+            await ctx.channel.send("To play TrustIssues there needs to be a channel named; trust-issues or trustissues.\nIf you would like a custom channel area ask in our support and our developers will do their best!")
             try:
                 await ctx.message.delete()
             except:
                 pass
+
+    
+            

@@ -8,7 +8,7 @@ class Info(commands.Cog):
     @commands.command()
     async def info(self,ctx):
         try:
-            AddAudit(f"{ctx.author} started info at {datetime.datetime.now()} in {ctx.channel}")
+            AddAudit(ctx=ctx,finished=False)
             embed = discord.Embed(title=f"Info",description=f"Requested by: {ctx.author.mention}\nIf you find any bugs, please report them.", color=0xdc00ff)
             embed.add_field(name="Current Time",value=f"{datetime.datetime.now()}",inline=False)
             embed.add_field(name="CPU Usage",value=f"{psutil.cpu_percent()}%",inline=False)
@@ -41,10 +41,8 @@ class Info(commands.Cog):
                     pass
         finally:
             try:
-                # if not a dm channel, but a server channel
-                if not isinstance(ctx.channel, discord.DMChannel):
-                    # Delete the message to reduce spam
-                    await ctx.message.delete()
-            except discord.errors.NotFound:
+                await ctx.message.delete()
+            except:
                 pass
+            AddAudit(ctx=ctx,finished=True)
             return

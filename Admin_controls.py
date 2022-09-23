@@ -3,90 +3,57 @@ from __module import *
 class AdminControls(commands.Cog):
     def __init__(self,client) -> None:
         self.client = client
-
-    
-    @commands.command()
-    async def files(self,ctx):
-        try:
-            try:
-                AddAudit(f"{ctx.author} started Files at {datetime.datetime.now()} in {ctx.channel}")
-                
-                if not isinstance(ctx.channel, discord.DMChannel):
-                    
-                    await ctx.message.delete()
-            except discord.errors.NotFound:
-                pass
-            
-            if ctx.author.id in ADMINS:
-                
-                await ctx.channel.send(embed=SimpleEmbed(f"Sending files...",des=f"{ctx.author.mention} is sending files...").rn())
-                
-                for file in os.listdir(MAINPATH):
-                    try:
-                        if file.endswith(".py"):
-                            await ctx.channel.send(file=discord.File(f'{file}'))
-                    except IsADirectoryError:
-                        pass
-        finally:
-            await ctx.channel.send("Done!")
-
    
-    @commands.command()
+    @commands.command(aliases=["kill"])
     async def quit(self,ctx):
         try:
-            AddAudit(f"{ctx.author} started $quit at {datetime.datetime.now()} in {ctx.channel}")
-            try:
-                
-                if not isinstance(ctx.channel, discord.DMChannel):
-                    
-                    await ctx.message.delete()
-            except discord.errors.NotFound:
-                pass
-            
+            AddAudit(ctx=ctx,finished=False)
             if ctx.author.id == ADMINS[0]:
-                
                 await ctx.channel.send(embed=SimpleEmbed(f"Quitting...",des=f"{ctx.message.author.mention} is quitting the bot...").rn())
                 exit()
+            else:
+                await ctx.channel.send(embed=SimpleEmbed("You're not a admin!").rn())
         finally:
-            exit()
-
+            AddAudit(ctx=ctx,finished=True)
    
-    @commands.command()
+    @commands.command(aliases=["reset","restart"])
     async def reboot(self,ctx):
         try:
-            AddAudit(f"{ctx.author} started $reboot at {datetime.datetime.now()} in {ctx.channel}")
-            try:
-                
-                if not isinstance(ctx.channel, discord.DMChannel):
-                    
-                    await ctx.message.delete()
-            except discord.errors.NotFound:
-                pass
+            AddAudit(ctx=ctx,finished=False)
             if ctx.author.id in ADMINS:
                 await ctx.channel.send(embed=SimpleEmbed(f"Rebooting...",des=f"{ctx.message.author.mention} is rebooting the bot...").rn())
                 call(["python", f"{MAINPATH}__main__.py"])
+            else:
+                await ctx.channel.send(embed=SimpleEmbed("You're not a admin!").rn())
+                return
         finally:
+            AddAudit(ctx=ctx,finished=True)
             exit()
-
    
-    @commands.command()
+    @commands.command(aliases=["guilds_list","guilds","serverlist","server_list"])
     async def servers(self,ctx):
+        await responder.wait_until_ready()
+        mdel = []
+        mdel.append(ctx.message)
         try:
-            AddAudit(f"{ctx.author} started $servers at {datetime.datetime.now()} in {ctx.channel}")
             if ctx.author.id in ADMINS:
-                
-                Servers_Embed = discord.Embed(title=f"Servers",des=f"{ctx.message.author.mention} is sending the server names...",color=0x00ff00)
-                
-                for server in responder.guilds:
-                    Servers_Embed.add_field(name=server.name,value=f"{server.member_count} users",inline=True)
-                
-                await ctx.channel.send(embed=Servers_Embed)
+                MainEmbed = SimpleEmbed(f"We are in {len([g for g in responder.guilds])}",des="May not be accurate.").rn()
+                for guild in responder.guilds:
+                    MainEmbed.add_field(name=guild.name,value=str(guild.member_count),inline=True)
+                await responder.wait_until_ready()
+                await ctx.channel.send(embed=MainEmbed)
+            else:
+                NotAdmin = await ctx.channel.send(embed=SimpleEmbed("You're not a admin!").rn())
+        except Exception as error:
+            ErrorMessage = await ctx.channel.send(f"**An error occured on our side. To report any errors copy and send this to our support server** <<< {error} >>> \n__**Thank you for your cooperation.**__")
+            SupportServer = await ctx.channel.send("https://discord.gg/h9sdWTrKDy")
         finally:
-            try:
-               
-                if not isinstance(ctx.channel, discord.DMChannel):
-                   
-                    await ctx.message.delete()
-            except discord.errors.NotFound:
-                pass
+            for m in mdel:
+                await m.delete()
             return
+                
+
+
+
+
+                

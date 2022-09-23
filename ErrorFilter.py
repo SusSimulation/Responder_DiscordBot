@@ -13,6 +13,10 @@ async def on_command_error(ctx, error):
     if isinstance(error, discord.errors.NotFound):
         return
 
+    if isinstance(error, discord.errors.Forbidden):
+        await ctx.channel.send(embed=SimpleEmbed("Unfortunately, I do not have the permission to do what you asked. MissingPermissions"))
+        return
+
     # if the pay load is to big HTTPEXCEPTION
 
     if error.__class__.__name__ == "CommandInvokeError":
@@ -31,5 +35,4 @@ async def on_command_error(ctx, error):
     # Send the error in the dms of JAZZYJAZZ
     await JAZZYJAZZ.send(embed=SimpleEmbed(f"{error}",des=f"({error.__class__.__name__}) Error was raised in {ReturnInfo(ctx).rn()} at { datetime.datetime.now()}").rn())
     # Send the error in the channel
-    AddAudit(f"{error} ---- ({error.__class__.__name__}) Error was raised in {ReturnInfo(ctx).rn()} at { datetime.datetime.now()}")
     return

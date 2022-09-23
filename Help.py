@@ -7,7 +7,7 @@ class Help(commands.Cog):
     @commands.command()
     async def help(self,ctx):
         try:
-            AddAudit(f"{ctx.author} started Help at {datetime.datetime.now()} in {ctx.channel}")
+            AddAudit(ctx=ctx,finished=False)
             # initialize the embed
             Commands_Embed_for_Help_Command = SimpleEmbed("Commands",des=f"{responder.user.name} has been online for {str(datetime.timedelta(seconds=int(round(time.time()-TIMEONLINE))))}.\nRequested by: {ctx.author.mention}\nGames can only be called once at a time in a chat channel ( It can cause errors! )").rn()
             # Add a field for each command
@@ -27,10 +27,8 @@ class Help(commands.Cog):
                 await HelpCommandEmbed.remove_reaction("❌",responder.user)
         finally:
             try:
-                # if not a dm channel, but a server channel
-                if not isinstance(ctx.channel, discord.DMChannel):
-                    # Delete the message to reduce spam
-                    await ctx.message.delete()
-            except discord.errors.NotFound:
+                await ctx.message.delete()
+            except:
                 pass
+            AddAudit(ctx=ctx,finished=True)
             return

@@ -18,7 +18,7 @@ class StupidExtraStuff(commands.Cog):
         try:
             self.UserIdMessage = await ctx.channel.send(embed=SimpleEmbed(f"{ctx.author.name}'s Id: {ctx.author.id}").rn())
         except:
-            await ctx.channel.send(f"Error while sending id of user; {ctx.author}, Sorry for the inconvenience here is your id: {ctx.author.id}")
+            await ctx.channel.send(f"Error while sending id of user; {ctx.author}.\nSorry for the inconvenience, here is your id: {ctx.author.id}")
         finally:
             await ctx.message.delete()
             await asyncio.sleep(10)

@@ -7,7 +7,7 @@ class ServerInfo(commands.Cog):
     @commands.command()
     async def serverinfo(self, ctx):
         try:
-            AddAudit(f"{ctx.author} started $serverinfo at {datetime.datetime.now()} in {ctx.channel}")
+            AddAudit(ctx=ctx,finished=False)
             embed = discord.Embed(title=f"{ctx.guild.name}'s info", description="Here's what I could find.", color=0x00ff00)
             embed.add_field(name="Name", value=ctx.guild.name, inline=True)
             embed.add_field(name="ID", value=ctx.guild.id, inline=True)
@@ -20,12 +20,16 @@ class ServerInfo(commands.Cog):
             embed.set_thumbnail(url=ctx.guild.icon_url)
             await ctx.send(embed=embed)
         finally:
-            await ctx.message.delete()
+            AddAudit(ctx=ctx,finished=True)
+            try:
+                await ctx.message.delete()
+            except:
+                pass
 
     @commands.command()
     async def channelinfo(self, ctx, channel: discord.TextChannel = None):
         try:
-            AddAudit(f"{ctx.author} started $channelinfo at {datetime.datetime.now()} in {ctx.channel}")
+            AddAudit(ctx=ctx,finished=True)
             if channel is None:
                 channel = ctx.channel
             embed = discord.Embed(title=f"{channel.name}'s info", description="Here's what I could find.", color=0x00ff00)
@@ -40,4 +44,8 @@ class ServerInfo(commands.Cog):
             embed.set_thumbnail(url=channel.guild.icon_url)
             await ctx.send(embed=embed)
         finally:
-            await ctx.message.delete()
+            AddAudit(ctx=ctx,finished=True)
+            try:
+                await ctx.message.delete()
+            except:
+                pass

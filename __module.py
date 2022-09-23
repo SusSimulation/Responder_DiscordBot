@@ -15,18 +15,16 @@ MAINPATH = str(os.path.dirname(os.path.abspath(__file__))).replace("\\","/") + "
 with open(f"{MAINPATH}TOKEN.txt", "r") as f:
     RESPONDERTOKEN = f.read()
 
-VERSION = 4.0
+VERSION = 5.0
 
 intents = discord.Intents().all()
 responder = commands.Bot(command_prefix='$',help_command=None,intents=intents)
+
 ADMINS = [800558571129274450,879210381661335592]
 
-COOLGUILDS = [
-1012146008341360721
-]
-
 # not in use yet
-WelcomeGuilds = []
+WelcomeGuilds = [1012146008341360721]
+
 ChannelsInUse = []
     
 
@@ -37,7 +35,9 @@ Commands = {
     "$myid" : "Ever forget your ID?",
     "$clear":"$clear (amount wanting to clear), command that will delete messages.",
     "$serverinfo" : "Info on the server.",
-    "$channelinfo" : "Info on the current channel"
+    "$channelinfo" : "Info on the current channel",
+    "$add_welcome": "Will welcome user opon arrival, to set up type $add_welcome. To use this command you will need administrator in the discord server.",
+    "$remove_welcome":"If you would like to remove the welcome feature, then type; $remove_welcome. To use this command you will need administrator in the discord server."
 }
 
 class SimpleEmbed:
@@ -51,12 +51,13 @@ class SimpleEmbed:
             return discord.Embed(title=self.t,description=self.des,color=0xff0000)
 
 class AddAudit:
-    def __init__(self,info=None):
-        self.info = info
+    def __init__(self,ctx,finished=None):
+        self.ctx = ctx
+        self.finished = finished
         self.Print()
     def Print(self):
-        self.msg = f' {self.info} '
-        print(f">>> {self.msg} <<<")
+        self.msg = f' {self.ctx.author}/{self.ctx.author.id} typed [{self.ctx.message.content}] in {ReturnInfo(self.ctx).rn()} at {datetime.datetime.now()} :: Finished = {self.finished}'
+        print(f">>> {self.msg}")
 
 
 class ReturnInfo:
@@ -78,7 +79,7 @@ class ReturnGuildOrAuthor:
         except:
             return self.ctx.author.id
 
-
+#In progress
 class WelcomeGuildsData:
     def __init__(self) -> None:
         self.filepath = f"{MAINPATH}/WelcomeGuilds.txt"
