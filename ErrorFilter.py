@@ -7,14 +7,11 @@ async def on_command_error(ctx, error):
         return
         
     if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.channel.send(embed=SimpleEmbed(f"${ctx.command.name} requires argument < {error.param.name} >.").rn())
+        if French(ctx).rn() == True:
+            await ctx.channel.send(embed=SimpleEmbed(f"${ctx.command.name} besoins l'argument < {error.param.name} >.").rn())
         return
 
     if isinstance(error, discord.errors.NotFound):
-        return
-
-    if isinstance(error, discord.errors.Forbidden):
-        await ctx.channel.send(embed=SimpleEmbed("Unfortunately, I do not have the permission to do what you asked. MissingPermissions"))
         return
 
     # if the pay load is to big HTTPEXCEPTION
@@ -22,11 +19,17 @@ async def on_command_error(ctx, error):
     if error.__class__.__name__ == "CommandInvokeError":
         return
     if error.__class__.__name__ == "MissingPermissions":
-        await ctx.channel.send(embed=SimpleEmbed("Unfortunately, I do not have the permission to do what you asked. MissingPermissions"))
+        if French(ctx).rn() == True:
+            await ctx.channel.send(embed=SimpleEmbed("Malheureusement, vous ou moi n'avons pas la permission de faire ce que vous avez demandé. MissingPermissions").rn())
+        else:
+            await ctx.channel.send(embed=SimpleEmbed("Unfortunately, I or you do not have the permission to do what you asked. MissingPermissions").rn())
         return
     
     if error.__class__.__name__ == "BadArgument":
-        await ctx.channel.send(embed=SimpleEmbed(f"Bad argument!").rn())
+        if French(ctx).rn() == True:
+            await ctx.channel.send(embed=SimpleEmbed(f"Mauvais argument!").rn())
+        else:
+            await ctx.channel.send(embed=SimpleEmbed(f"Bad argument!").rn())
         return
     
     # If there is a super big error, the error will be posted in that channel, and along in the dms of JAZZYJAZZ.

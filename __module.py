@@ -22,9 +22,6 @@ responder = commands.Bot(command_prefix='$',help_command=None,intents=intents)
 
 ADMINS = [800558571129274450,879210381661335592]
 
-# not in use yet
-WelcomeGuilds = [1012146008341360721]
-
 ChannelsInUse = []
     
 
@@ -36,8 +33,21 @@ Commands = {
     "$clear":"$clear (amount wanting to clear), command that will delete messages.",
     "$serverinfo" : "Info on the server.",
     "$channelinfo" : "Info on the current channel",
-    "$add_welcome": "Will welcome user opon arrival, to set up type $add_welcome. To use this command you will need administrator in the discord server.",
-    "$remove_welcome":"If you would like to remove the welcome feature, then type; $remove_welcome. To use this command you will need administrator in the discord server."
+    "$add_welcome": "Will welcome user opon arrival, to set up type $add_welcome. To use this command you will need administrator in the discord server. (Just in English)",
+    "$remove_welcome":"If you would like to remove the welcome feature, then type; $remove_welcome. To use this command you will need administrator in the discord server. (Just in English)",
+    "$change_language":"Swaps language between English and French."
+}
+CommandsFR = {
+    "$trustissues" : "Jeu principal ! Obtenez des réponses totalement anonymes à N'IMPORTE QUELLE question dans le monde ! Votre imagination est votre limite",
+    "$enquête" : "COMING SOON : Un sondage avec 4 réponses possibles, le gamemaster devra taper la signification de chaque emoji puis il affichera les résultats.",
+    "$aide" : "Une commande d'aide basique qui affiche les commandes, et parfois plus. PS ; vous êtes en train de l'utiliser en ce moment...",
+    "$id" : "Avez-vous déjà oublié votre ID ?",
+    "$supprimer" : "$clear (montant à effacer), commande qui effacera les messages",
+    "$infoguilde" : "Info sur le serveur",
+    "$infotexte" : "Info sur le canal actuel",
+    "$bienvenue" : "Accueillera l'utilisateur à son arrivée, pour le configurer tapez $add_welcome. Pour utiliser cette commande, vous aurez besoin d'un administrateur sur le serveur discord. (uniquement en anglais)",
+    "$supprimer_l'accueil" : "Si vous souhaitez supprimer la fonction de bienvenue, tapez ; $remove_welcome. Pour utiliser cette commande, vous aurez besoin d'un administrateur sur le serveur discord. (uniquement en anglais)",
+    "$changerlangue" : "Change la langue entre l'anglais et le français."
 }
 
 class SimpleEmbed:
@@ -56,9 +66,19 @@ class AddAudit:
         self.finished = finished
         self.Print()
     def Print(self):
-        self.msg = f' {self.ctx.author}/{self.ctx.author.id} typed [{self.ctx.message.content}] in {ReturnInfo(self.ctx).rn()} at {datetime.datetime.now()} :: Finished = {self.finished}'
+        self.msg = f' {self.ctx.author}/{self.ctx.author.id} typed [{self.ctx.message.content}] in {ReturnInfo(self.ctx).rn()} channel = {self.ctx.channel} at {datetime.datetime.now()} :: Finished = {self.finished}'
         print(f">>> {self.msg}")
 
+# LANGUAGES ---------
+class French:
+    def __init__(self,ctx):
+        self.ctx = ctx
+    def rn(self):
+        with open(f"{MAINPATH}//Francais.txt","r") as f:
+            if str(self.ctx.author.id) in f.read():
+                return True
+            else:
+                return False
 
 class ReturnInfo:
     def __init__(self,ctx):
@@ -69,7 +89,6 @@ class ReturnInfo:
         except:
             return f"{self.ctx.author} with the id of {self.ctx.author.id}"
 
-
 class ReturnGuildOrAuthor:
     def __init__(self,ctx):
         self.ctx = ctx
@@ -78,28 +97,4 @@ class ReturnGuildOrAuthor:
             return self.ctx.guild.id
         except:
             return self.ctx.author.id
-
-#In progress
-class WelcomeGuildsData:
-    def __init__(self) -> None:
-        self.filepath = f"{MAINPATH}/WelcomeGuilds.txt"
-
-    async def AddId(self,id):
-        with open(self.filepath,"w") as f: 
-            f.write(f"{id}\n") #!
-    async def ReturnList(self):
-        with open(self.filepath,"r") as f:
-            return [line for line in f]
-    async def RemoveId(self,id):
-        # Read file.txt
-        with open(self.filepath, 'r') as file:
-            text = file.read()
-
-
-        # Delete text and Write
-        with open(self.filepath, 'w') as file:
-            # Delete
-            new_text = text.replace(f'{id}', '')
-            # Write
-            file.write(new_text) #!
     

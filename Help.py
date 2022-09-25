@@ -1,18 +1,22 @@
+from ast import alias
 from __module import *
 
 class Help(commands.Cog):
     def __init__(self,client) -> None:
         self.client = client
     # Help Command ------------------------------------------------------------------------------------------------------------------------------
-    @commands.command()
+    @commands.command(aliases=["aide"])
     async def help(self,ctx):
         try:
-            AddAudit(ctx=ctx,finished=False)
             # initialize the embed
-            Commands_Embed_for_Help_Command = SimpleEmbed("Commands",des=f"{responder.user.name} has been online for {str(datetime.timedelta(seconds=int(round(time.time()-TIMEONLINE))))}.\nRequested by: {ctx.author.mention}\nGames can only be called once at a time in a chat channel ( It can cause errors! )").rn()
+            Commands_Embed_for_Help_Command = SimpleEmbed("Commands",des=f"{ctx.author.mention}").rn()
             # Add a field for each command
-            for i in Commands:
-                UpdatedCommands_Embed_for_Help_Command = Commands_Embed_for_Help_Command.add_field(name=f"{i}",value=f"{Commands[i]}",inline=False)
+            if French(ctx).rn() == False:
+                for i in Commands:
+                    UpdatedCommands_Embed_for_Help_Command = Commands_Embed_for_Help_Command.add_field(name=f"{i}",value=f"{Commands[i]}",inline=False)
+            else:
+                for i in CommandsFR:
+                    UpdatedCommands_Embed_for_Help_Command = Commands_Embed_for_Help_Command.add_field(name=f"{i}",value=f"{CommandsFR[i]}",inline=False)
             # Send the embed
             HelpCommandEmbed = await ctx.channel.send(embed=UpdatedCommands_Embed_for_Help_Command)
             # Adding reaction for easy deleting of the embeded message.
@@ -30,5 +34,4 @@ class Help(commands.Cog):
                 await ctx.message.delete()
             except:
                 pass
-            AddAudit(ctx=ctx,finished=True)
             return

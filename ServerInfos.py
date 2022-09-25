@@ -4,10 +4,9 @@ class ServerInfo(commands.Cog):
     def __init__(self, client):
         self.client = client
     
-    @commands.command()
+    @commands.command(aliases=["infoguilde"])
     async def serverinfo(self, ctx):
         try:
-            AddAudit(ctx=ctx,finished=False)
             embed = discord.Embed(title=f"{ctx.guild.name}'s info", description="Here's what I could find.", color=0x00ff00)
             embed.add_field(name="Name", value=ctx.guild.name, inline=True)
             embed.add_field(name="ID", value=ctx.guild.id, inline=True)
@@ -20,16 +19,14 @@ class ServerInfo(commands.Cog):
             embed.set_thumbnail(url=ctx.guild.icon_url)
             await ctx.send(embed=embed)
         finally:
-            AddAudit(ctx=ctx,finished=True)
             try:
                 await ctx.message.delete()
             except:
                 pass
 
-    @commands.command()
+    @commands.command(aliases=["infotexte"])
     async def channelinfo(self, ctx, channel: discord.TextChannel = None):
         try:
-            AddAudit(ctx=ctx,finished=True)
             if channel is None:
                 channel = ctx.channel
             embed = discord.Embed(title=f"{channel.name}'s info", description="Here's what I could find.", color=0x00ff00)
@@ -44,7 +41,6 @@ class ServerInfo(commands.Cog):
             embed.set_thumbnail(url=channel.guild.icon_url)
             await ctx.send(embed=embed)
         finally:
-            AddAudit(ctx=ctx,finished=True)
             try:
                 await ctx.message.delete()
             except:

@@ -13,12 +13,15 @@ class StupidExtraStuff(commands.Cog):
             await asyncio.sleep(10)
             await self.PongMessage.delete()
 
-    @commands.command()
+    @commands.command(aliases=["id"])
     async def myid(self,ctx):
         try:
             self.UserIdMessage = await ctx.channel.send(embed=SimpleEmbed(f"{ctx.author.name}'s Id: {ctx.author.id}").rn())
         except:
-            await ctx.channel.send(f"Error while sending id of user; {ctx.author}.\nSorry for the inconvenience, here is your id: {ctx.author.id}")
+            if French(ctx).rn() == True:
+                await ctx.channel.send(f"Erreur.")
+            else:
+                await ctx.channel.send(f"Error.")
         finally:
             await ctx.message.delete()
             await asyncio.sleep(10)
