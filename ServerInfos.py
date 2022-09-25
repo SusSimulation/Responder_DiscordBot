@@ -5,6 +5,7 @@ class ServerInfo(commands.Cog):
         self.client = client
     
     @commands.command(aliases=["infoguilde"])
+    @cooldowns(20)
     async def serverinfo(self, ctx):
         try:
             embed = discord.Embed(title=f"{ctx.guild.name}'s info", description="Here's what I could find.", color=0x00ff00)
@@ -25,6 +26,7 @@ class ServerInfo(commands.Cog):
                 pass
 
     @commands.command(aliases=["infotexte"])
+    @cooldowns(20)
     async def channelinfo(self, ctx, channel: discord.TextChannel = None):
         try:
             if channel is None:

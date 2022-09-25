@@ -17,15 +17,13 @@ class AdminControls(commands.Cog):
    
     @commands.command(aliases=["reset","restart"])
     async def reboot(self,ctx):
-        try:
-            if ctx.author.id in ADMINS:
-                await ctx.channel.send(embed=SimpleEmbed(f"Rebooting...",des=f"{ctx.message.author.mention} is rebooting the bot...").rn())
-                call(["python", f"{MAINPATH}__main__.py"])
-            else:
-                await ctx.channel.send(embed=SimpleEmbed("You're not a admin!").rn())
-                return
-        finally:
+        if ctx.author.id in ADMINS:
+            await ctx.channel.send(embed=SimpleEmbed(f"Rebooting...",des=f"{ctx.message.author.mention} is rebooting the bot...").rn())
+            call(["python", f"{MAINPATH}__main__.py"])
             exit()
+        else:
+            await ctx.channel.send(embed=SimpleEmbed("You're not a admin!").rn())
+            return
    
     @commands.command(aliases=["guilds_list","guilds","serverlist","server_list"])
     async def servers(self,ctx):

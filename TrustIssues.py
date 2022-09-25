@@ -1,6 +1,6 @@
-from ast import Add
 from __module import *
 import random
+
 class TrustIssuesGameC:
     def __init__(self,msg):
         self.msg = msg
@@ -206,10 +206,10 @@ class TrustIssuesGame(commands.Cog):
         self.client = client
 
     # Trust Issues Game ------------------------------------------------------------------------------------------------------------------------------
-    @commands.command(aliases=["trust_issues_custom","trustissuescustom","ti","trust_issues","t_i"])
+    @commands.command(aliases=["trustissue","ti","trust_issues","t_i"])
+    @cooldowns(20)
     async def trustissues(self,ctx):
         try:
-            AddAudit(ctx,finished=False)
             if "trust" in ctx.channel.name:
                 try:
 
@@ -246,7 +246,7 @@ class TrustIssuesGame(commands.Cog):
                 if French(ctx).rn() == True:
                     await ctx.channel.send("Pour jouer à TrustIssues, il faut avoir un canal nommé trust-issues ou trustissues (ou du moins avoir cela dans le nom). Si vous souhaitez un canal personnalisé, demandez-le à notre support et nos développeurs feront de leur mieux !")
                 else:
-                    await ctx.channel.send("To play TrustIssues there needs to be a channel named; trust-issues or trustissues (or at least have that in the name).\nIf you would like a custom channel area ask in our support and our developers will do their best!")
+                    await ctx.channel.send("To play TrustIssues there needs to be a channel named; trust-issues or trustissues (or at least have 'trust' in the name).\nIf you would like a custom channel area ask in our support and our developers will do their best!")
                 try:
                     await ctx.message.delete()
                 except:

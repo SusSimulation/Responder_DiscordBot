@@ -18,6 +18,9 @@ async def on_command_error(ctx, error):
 
     if error.__class__.__name__ == "CommandInvokeError":
         return
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.author.send(f'{ctx.message.content} is on cooldown, you can use it in {round(error.retry_after, 2)} seconds.')
+        return
     if error.__class__.__name__ == "MissingPermissions":
         if French(ctx).rn() == True:
             await ctx.channel.send(embed=SimpleEmbed("Malheureusement, vous ou moi n'avons pas la permission de faire ce que vous avez demandé. MissingPermissions").rn())

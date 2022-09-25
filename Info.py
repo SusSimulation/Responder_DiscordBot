@@ -6,6 +6,7 @@ class Info(commands.Cog):
         self.client = client
     # Info about server and bot ------------------------------------------------------------------------------------------------------------------------------
     @commands.command()
+    @cooldowns(25)
     async def info(self,ctx):
         try:
             embed = discord.Embed(title=f"Info",description=f"Requested by: {ctx.author.mention}\nIf you find any bugs, please report them.", color=0xdc00ff)

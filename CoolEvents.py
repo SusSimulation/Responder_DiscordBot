@@ -11,8 +11,11 @@ async def on_member_join(member):
             for channel in member.guild.channels:
                 if "welcome" in channel.name or channel.name in ["welcome","hello","hi","joins"]:
                     await channel.send(embed=SimpleEmbed(f"Welcome {member}!",des=f"{member.mention} {Sayings[random.randint(0,len(Sayings)-1)]} Feel free, check out the voice chats, channels, and the rules.").rn())
-                    Role = discord.utils.get(member.guild.roles, name="Member")
-                    await member.add_roles(Role)
+                    try:
+                        Role = discord.utils.get(member.guild.roles, name="Member")
+                        await member.add_roles(Role)
+                    except:
+                        pass
     return
 
 

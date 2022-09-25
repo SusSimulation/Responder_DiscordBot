@@ -6,6 +6,7 @@ class Moderation(commands.Cog):
 
     @commands.command(aliases=["add_welcome","bienvenue"])
     @commands.has_permissions(administrator=True, ban_members=True)
+    @cooldowns(25)
     async def addwelcome(self,ctx):
         try:
             with open(f"{MAINPATH}//WelcomeGuilds.txt","r") as f:
@@ -27,6 +28,7 @@ class Moderation(commands.Cog):
 
     @commands.command(aliases=["remove_welcome","supprimer_l'accueil"])
     @commands.has_permissions(administrator=True, ban_members=True)
+    @cooldowns(25)
     async def removewelcome(self,ctx):
         try:
             with open(f"{MAINPATH}//WelcomeGuilds.txt","r") as f:
@@ -48,6 +50,7 @@ class Moderation(commands.Cog):
                 pass
 
     @commands.command(aliases=["language","swap_language","changerlangue"])
+    @cooldowns(25)
     async def change_language(self,ctx):
         try:
             with open(f"{MAINPATH}//Francais.txt","r") as f:

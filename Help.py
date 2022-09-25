@@ -6,6 +6,7 @@ class Help(commands.Cog):
         self.client = client
     # Help Command ------------------------------------------------------------------------------------------------------------------------------
     @commands.command(aliases=["aide"])
+    @cooldowns(10)
     async def help(self,ctx):
         try:
             # initialize the embed
