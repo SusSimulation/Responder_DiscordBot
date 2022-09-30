@@ -6,6 +6,7 @@ Sayings = ["Thanks for joining!","Feel free to do anything you would like!","Tha
 
 @responder.event
 async def on_member_join(member):
+    await responder.wait_until_ready()
     with open(f"{MAINPATH}//WelcomeGuilds.txt","r") as f:
         if str(member.guild.id) in f.read():
             for channel in member.guild.channels:
@@ -21,6 +22,7 @@ async def on_member_join(member):
 
 @responder.event
 async def on_member_remove(member):
+    await responder.wait_until_ready()
     if member.guild.id == 1017015887695450152: 
         await responder.get_channel(1017017584362725456).send(embed=SimpleEmbed(f"{member} left the server.").rn())
     return

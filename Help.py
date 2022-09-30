@@ -8,6 +8,7 @@ class Help(commands.Cog):
     @commands.command(aliases=["aide"])
     @cooldowns(10)
     async def help(self,ctx):
+        await responder.wait_until_ready()
         try:
             # initialize the embed
             Commands_Embed_for_Help_Command = SimpleEmbed("Commands",des=f"{ctx.author.mention}").rn()

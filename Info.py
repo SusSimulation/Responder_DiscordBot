@@ -8,6 +8,7 @@ class Info(commands.Cog):
     @commands.command()
     @cooldowns(25)
     async def info(self,ctx):
+        await responder.wait_until_ready()
         try:
             embed = discord.Embed(title=f"Info",description=f"Requested by: {ctx.author.mention}\nIf you find any bugs, please report them.", color=0xdc00ff)
             embed.add_field(name="Current Time",value=f"{datetime.datetime.now()}",inline=False)

@@ -7,6 +7,7 @@ class ServerInfo(commands.Cog):
     @commands.command(aliases=["infoguilde"])
     @cooldowns(20)
     async def serverinfo(self, ctx):
+        await responder.wait_until_ready()
         try:
             embed = discord.Embed(title=f"{ctx.guild.name}'s info", description="Here's what I could find.", color=0x00ff00)
             embed.add_field(name="Name", value=ctx.guild.name, inline=True)
@@ -25,9 +26,10 @@ class ServerInfo(commands.Cog):
             except:
                 pass
 
-    @commands.command(aliases=["infotexte"])
+    @commands.command(aliases=["infotexte","info_texte"])
     @cooldowns(20)
     async def channelinfo(self, ctx, channel: discord.TextChannel = None):
+        await responder.wait_until_ready()
         try:
             if channel is None:
                 channel = ctx.channel

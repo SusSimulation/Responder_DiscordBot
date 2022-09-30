@@ -209,6 +209,7 @@ class TrustIssuesGame(commands.Cog):
     @commands.command(aliases=["trustissue","ti","trust_issues","t_i"])
     @cooldowns(20)
     async def trustissues(self,ctx):
+        await responder.wait_until_ready()
         try:
             if "trust" in ctx.channel.name:
                 try:

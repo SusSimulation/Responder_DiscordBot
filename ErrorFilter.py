@@ -3,6 +3,7 @@ from __module import *
 # remove the usless error message; discord.ext.commands.errors.CommandNotFound
 @responder.event
 async def on_command_error(ctx, error):
+    await responder.wait_until_ready()
     if isinstance(error, commands.CommandNotFound):
         return
         
@@ -19,7 +20,10 @@ async def on_command_error(ctx, error):
     if error.__class__.__name__ == "CommandInvokeError":
         return
     if isinstance(error, commands.CommandOnCooldown):
-        await ctx.author.send(f'{ctx.message.content} is on cooldown, you can use it in {round(error.retry_after, 2)} seconds.')
+        if French(ctx).rn() == True:
+            await ctx.author.send(f"{ctx.message.content} est sur le cooldown, vous pouvez l'utiliser en {round(error.retry_after, 4)} secondes.")
+        else:
+            await ctx.author.send(f"{ctx.message.content} is on cooldown, you can use the command in {round(error.retry_after, 4)} seconds.")
         return
     if error.__class__.__name__ == "MissingPermissions":
         if French(ctx).rn() == True:

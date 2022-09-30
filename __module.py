@@ -17,7 +17,7 @@ with open(f"{MAINPATH}TOKEN.txt", "r") as f:
 
 VERSION = 5.0
 
-intents = discord.Intents().all()
+intents = discord.Intents.default()
 responder = commands.Bot(command_prefix='$',help_command=None,intents=intents)
 
 ADMINS = [800558571129274450,879210381661335592]
@@ -27,7 +27,7 @@ ChannelsInUse = []
 
 Commands = {
     "$trustissues" : "Main game! Get fully anonymous answers from ANY question in the world! Your imagination is your limit.",
-    "$survey":"COMING SOON: A survey with 4 posible responses, the gamemaster will type the meaning for each emoji then it will post the results.",
+    "$survey":"COMING SOON: In a survey with four possible responses, the gamemaster will type the meaning for each emoji then it will post the results.",
     "$help" : "Bare bones help command and display the commands, and sometimes more. PS; you're kinda using it right now...",
     "$myid" : "Ever forget your ID?",
     "$clear":"$clear (amount wanting to clear), command that will delete messages.",

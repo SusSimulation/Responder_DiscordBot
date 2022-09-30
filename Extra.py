@@ -6,6 +6,7 @@ class StupidExtraStuff(commands.Cog):
 
     @commands.command()
     async def ping(self,ctx):
+        await responder.wait_until_ready()
         try:
             self.PongMessage = await ctx.channel.send(embed=SimpleEmbed(f"Pong! {self.client.latency * 1000}ms").rn())
         finally:
@@ -15,6 +16,7 @@ class StupidExtraStuff(commands.Cog):
 
     @commands.command(aliases=["id"])
     async def myid(self,ctx):
+        await responder.wait_until_ready()
         try:
             self.UserIdMessage = await ctx.channel.send(embed=SimpleEmbed(f"{ctx.author.name}'s Id: {ctx.author.id}").rn())
         except:

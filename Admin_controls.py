@@ -24,39 +24,16 @@ class AdminControls(commands.Cog):
         else:
             await ctx.channel.send(embed=SimpleEmbed("You're not a admin!").rn())
             return
-   
-    @commands.command(aliases=["guilds_list","guilds","serverlist","server_list"])
-    async def servers(self,ctx):
-        await responder.wait_until_ready()
-        mdel = []
-        mdel.append(ctx.message)
-        try:
-            if ctx.author.id in ADMINS:
-                MainEmbed = SimpleEmbed(f"We are in {len([g for g in responder.guilds])}",des="May not be accurate.").rn()
-                for guild in responder.guilds:
-                    MainEmbed.add_field(name=guild.name,value=str(guild.member_count),inline=True)
-                await responder.wait_until_ready()
-                await ctx.channel.send(embed=MainEmbed)
-            else:
-                NotAdmin = await ctx.channel.send(embed=SimpleEmbed("You're not a admin!").rn())
-        except Exception as error:
-            ErrorMessage = await ctx.channel.send(f"**An error occured on our side. To report any errors copy and send this to our support server** <<< {error} >>> \n__**Thank you for your cooperation.**__")
-            SupportServer = await ctx.channel.send("https://discord.gg/h9sdWTrKDy")
-        finally:
-            for m in mdel:
-                await m.delete()
-            return
 
     @commands.command(aliases=["usersearch","find"])
     async def searchuser(self,ctx,userid):
+        await responder.wait_until_ready()
         try:
             if ctx.author.id in ADMINS:
                 for guild in responder.guilds:
                     for member in guild.members:
                         if member.id == int(userid):
                             await ctx.channel.send(f"User found! name = {member}, id = {member.id}, guild = {guild}, guild members = {guild.member_count}, guild id = {guild.id}")
-                            return
-                await ctx.channel.send("User not found.")
             else:
                 pass
         except:
@@ -66,6 +43,7 @@ class AdminControls(commands.Cog):
 
     @commands.command(aliases=["most_members"])
     async def biggest_server(self,ctx):
+        await responder.wait_until_ready()
         try:
             if ctx.author.id in ADMINS:
                 guild_member_count = []
