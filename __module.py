@@ -27,26 +27,14 @@ ChannelsInUse = []
 
 Commands = {
     "$trustissues" : "Main game! Get fully anonymous answers from ANY question in the world! Your imagination is your limit.",
-    "$survey":"COMING SOON: In a survey with four possible responses, the gamemaster will type the meaning for each emoji then it will post the results.",
     "$help" : "Bare bones help command and display the commands, and sometimes more. PS; you're kinda using it right now...",
-    "$myid" : "Ever forget your ID?",
     "$clear":"$clear (amount wanting to clear), command that will delete messages.",
-    "$serverinfo" : "Info on the server.",
-    "$channelinfo" : "Info on the current channel",
-    "$add_welcome": "Will welcome user opon arrival, to set up type $add_welcome. To use this command you will need administrator in the discord server. (Just in English)",
-    "$remove_welcome":"If you would like to remove the welcome feature, then type; $remove_welcome. To use this command you will need administrator in the discord server. (Just in English)",
     "$change_language":"Swaps language between English and French."
 }
 CommandsFR = {
     "$trustissues" : "Jeu principal ! Obtenez des réponses totalement anonymes à N'IMPORTE QUELLE question dans le monde ! Votre imagination est votre limite",
-    "$enquête" : "COMING SOON : Un sondage avec 4 réponses possibles, le gamemaster devra taper la signification de chaque emoji puis il affichera les résultats.",
     "$aide" : "Une commande d'aide basique qui affiche les commandes, et parfois plus. PS ; vous êtes en train de l'utiliser en ce moment...",
-    "$id" : "Avez-vous déjà oublié votre ID ?",
     "$supprimer" : "$clear (montant à effacer), commande qui effacera les messages",
-    "$infoguilde" : "Info sur le serveur",
-    "$infotexte" : "Info sur le canal actuel",
-    "$bienvenue" : "Accueillera l'utilisateur à son arrivée, pour le configurer tapez $add_welcome. Pour utiliser cette commande, vous aurez besoin d'un administrateur sur le serveur discord. (uniquement en anglais)",
-    "$supprimer_l'accueil" : "Si vous souhaitez supprimer la fonction de bienvenue, tapez ; $remove_welcome. Pour utiliser cette commande, vous aurez besoin d'un administrateur sur le serveur discord. (uniquement en anglais)",
     "$changerlangue" : "Change la langue entre l'anglais et le français."
 }
 

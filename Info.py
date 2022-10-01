@@ -24,6 +24,7 @@ class Info(commands.Cog):
             embed.add_field(name="Uptime",value=str(datetime.timedelta(seconds=int(round(time.time()-TIMEONLINE)))),inline=False)
             embed.add_field(name="Version",value=f"{VERSION}",inline=False)
             embed.add_field(name="Guilds",value=f"{len([guild for guild in responder.guilds])}",inline=False)
+            embed.add_field(name="Users",value=f"{sum([guild.member_count for guild in responder.guilds])}",inline=False)
             e = await ctx.channel.send(embed=embed)
             await e.add_reaction("❌")
             try:
